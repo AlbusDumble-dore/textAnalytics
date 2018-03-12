@@ -1,0 +1,27 @@
+
+# At a minimum we need to split our data into a training set and a
+# test set. In a true project we would want to use a three-way split 
+# of training, validation, and test.
+#
+# As we know that our data has non-trivial class imbalance, we'll 
+# use the mighty caret package to create a randomg train/test split 
+# that ensures the correct ham/spam class label proportions (i.e., 
+# we'll use caret for a random stratified split).
+library(caret)
+help(package = "caret")
+
+
+# Use caret to create a 70%/30% stratified split. Set the random
+# seed for reproducibility.
+set.seed(32984)
+indexes <- createDataPartition(spam.raw$Label, times = 1,
+                               p = 0.7, list = FALSE)
+
+train <- spam.raw[indexes,]
+test <- spam.raw[-indexes,]
+
+
+# Verify proportions.
+prop.table(table(train$Label))
+prop.table(table(test$Label))
+
